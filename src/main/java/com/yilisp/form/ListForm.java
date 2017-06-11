@@ -47,9 +47,12 @@ public class ListForm implements Form {
 
     @Override
     public String toString() {
+        if(this == EMPTY){
+            return "()";
+        }
         return "(" +
-                " " +  (car == EMPTY ? "()": car) +
-                ", " + (cdr == EMPTY ? "()": cdr) +
+                " " +  car +
+                ", " + cdr +
                 ')';
     }
 }

@@ -10,8 +10,8 @@ a small lisp language
     eg. #t,#f
     
 3. Symbol
-
-    eg. var, some-var
+    
+    eg. var, some-var. [a-zA-Z_-]
     
 4. Function 
 

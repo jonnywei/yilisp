@@ -3,10 +3,9 @@ package com.yilisp;
 import com.yilisp.form.Form;
 import com.yilisp.form.ListForm;
 import com.yilisp.form.NumberForm;
+import com.yilisp.form.SymbolForm;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PushbackInputStream;
+import java.io.*;
 
 /**
  * Created by wjj on 6/10/17.
@@ -14,83 +13,120 @@ import java.io.PushbackInputStream;
 public class Reader {
 
 
+
     public static Form readForm(InputStream inputStream) throws IOException {
 
-        PushbackInputStream pushbackInputStream = new PushbackInputStream(inputStream);
-        pushbackInputStream.mark(1);
+         return  readForm(new PushbackReader(new InputStreamReader(inputStream)));
 
-        readWhitespace(pushbackInputStream);
-        char ch = (char) pushbackInputStream.read();
+    }
+
+    public static Form readForm(PushbackReader pushbackReader) throws IOException{
+
+        readWhitespace(pushbackReader);
+        char ch = (char) pushbackReader.read();
 
         if(Character.isDigit(ch)){
-            pushbackInputStream.unread(ch);
-            return  readNumber(pushbackInputStream);
+            pushbackReader.unread(ch);
+            return  readNumber(pushbackReader);
         }else  if(ch == '('){
-            return readList(pushbackInputStream);
-        }
-
+            return readList(pushbackReader);
+        }else if(CharUtil.isSymbolChar(ch)) {
+            pushbackReader.unread(ch);
+            return readSymbol(pushbackReader);
+        }//
         else {
             throw new IllegalArgumentException("Illegal character: " + ch);
         }
 
-//        return null;
     }
 
 
+    public static ListForm readList(PushbackReader reader) throws IOException {
 
-    public static ListForm readList(PushbackInputStream pushbackInputStream) throws IOException {
 
-
-        readWhitespace(pushbackInputStream); //
-        char ch = (char) pushbackInputStream.read();
-        if(Character.isDigit(ch)){
-            pushbackInputStream.unread(ch);
-
-            NumberForm numberForm  =  readNumber(pushbackInputStream);
-            ListForm form = readList(pushbackInputStream);
-            return  form.cons(numberForm);
-        }else  if(ch == '('){
-
-            ListForm lform =readList(pushbackInputStream);
-            ListForm form = readList(pushbackInputStream);
-            return form.cons(lform);
-
-        }else if(ch == ')'){
+        readWhitespace(reader); //
+        char ch = (char) reader.read();
+        if(ch == ')'){
             return ListForm.EMPTY ;
+        }else {
+            reader.unread(ch);
         }
-        else {
-            throw new IllegalArgumentException("Illegal character: " + ch);
-        }
+        Form form1 = readForm(reader);
+        ListForm form = readList(reader);
+        return  form.cons(form1);
+
+//        if(Character.isDigit(ch)){
+//            reader.unread(ch);
+//
+//            NumberForm numberForm  =  readNumber(reader);
+//            ListForm form = readList(reader);
+//            return  form.cons(numberForm);
+//        }else  if(ch == '('){
+//
+//            ListForm lform =readList(reader);
+//            ListForm form = readList(reader);
+//            return form.cons(lform);
+//
+//        }else if(ch == ')'){
+//            return ListForm.EMPTY ;
+//        }else {
+//            reader.unread(ch);
+//            SymbolForm  symbolForm = readSymbol(reader);
+//            ListForm form = readList(reader);
+//            return  form.cons(symbolForm);
+//        }
+
+//        throw new IllegalArgumentException("Illegal character: " + ch);
+
 
     }
 
 
-    public static NumberForm readNumber(PushbackInputStream pushbackInputStream) throws IOException {
+    public static NumberForm readNumber(PushbackReader reader) throws IOException {
 
         StringBuilder sb = new StringBuilder();
 
-        char ch = (char) pushbackInputStream.read();
+        char ch = (char) reader.read();
 
         while (Character.isDigit(ch)){
             sb.append(ch);
-            ch = (char) pushbackInputStream.read();
+            ch = (char) reader.read();
         }
-
+//        if(!Character.is(ch)){
+//            throw new IllegalArgumentException("Illegal character: " + ch);
+//        }
+        reader.unread(ch);
         return new NumberForm(Long.valueOf(sb.toString(), 10));
     }
 
     /**
      * process whitespace
-     * @param pstream
+     * @param reader
      * @throws IOException
      */
-    public static void readWhitespace(PushbackInputStream pstream) throws IOException {
+    public static void readWhitespace(PushbackReader reader) throws IOException {
 
-        char ch = (char) pstream.read();
+        char ch = (char) reader.read();
         while (Character.isWhitespace(ch)){
-            ch = (char) pstream.read();
+            ch = (char) reader.read();
         }
-        pstream.unread(ch);
+        reader.unread(ch);
 
+    }
+
+
+
+    public static SymbolForm readSymbol(PushbackReader reader) throws IOException {
+
+        StringBuilder sb = new StringBuilder();
+
+        char ch = (char) reader.read();
+
+        while (CharUtil.isSymbolChar(ch)) {
+            sb.append(ch);
+            ch = (char) reader.read();
+        }
+        reader.unread(ch);
+        return new SymbolForm(sb.toString());
     }
 }

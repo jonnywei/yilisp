@@ -55,7 +55,7 @@ public class REPL {
                 System.out.println(output);
 
             }catch (Exception e){
-                System.err.println(e);
+                System.out.println(e);
             }
         }
 
