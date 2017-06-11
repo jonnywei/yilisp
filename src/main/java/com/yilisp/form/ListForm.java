@@ -1,5 +1,7 @@
 package com.yilisp.form;
 
+import java.util.List;
+
 /**
  * Created by wjj on 6/10/17.
  */
@@ -39,6 +41,15 @@ public class ListForm implements Form {
 
     public ListForm cons(Form form) {
         return new ListForm(form, this);
+    }
+
+
+    public static ListForm list(List<Form> forms){
+        ListForm l = ListForm.EMPTY;
+        for(int i= forms.size()-1; i >=0;  i--){
+            l = l.cons(forms.get(i));
+        }
+        return l;
     }
 
     public Object eval() {

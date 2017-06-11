@@ -6,6 +6,8 @@ import com.yilisp.form.NumberForm;
 import com.yilisp.form.SymbolForm;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wjj on 6/10/17.
@@ -14,9 +16,25 @@ public class Reader {
 
 
 
-    public static Form readForm(InputStream inputStream) throws IOException {
+    public static Form read(InputStream inputStream) throws IOException {
 
-         return  readForm(new PushbackReader(new InputStreamReader(inputStream)));
+         return  read(new PushbackReader(new InputStreamReader(inputStream)));
+
+    }
+
+
+    public static ListForm read(PushbackReader pushbackReader) throws IOException{
+
+        List<Form> formList = new ArrayList<>();
+        readWhitespace(pushbackReader);
+        char ch = (char) pushbackReader.read();
+        while ((byte)ch != -1){
+            pushbackReader.unread(ch);
+            formList.add(readForm(pushbackReader));
+             ch = (char) pushbackReader.read();
+
+        }
+        return ListForm.list(formList);
 
     }
 

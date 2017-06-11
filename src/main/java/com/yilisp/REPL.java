@@ -32,7 +32,7 @@ public class REPL {
 
        System.out.println(line);
 
-       return Reader.readForm(new ByteArrayInputStream(line.getBytes("UTF-8")));
+       return Reader.read(new ByteArrayInputStream(line.getBytes("UTF-8")));
 
 
     }
@@ -42,7 +42,7 @@ public class REPL {
         String line = "(  333  444 ( 777 8888 ) )";
 
 
-        return Reader.readForm(new ByteArrayInputStream(line.getBytes("UTF-8")));
+        return Reader.read(new ByteArrayInputStream(line.getBytes("UTF-8")));
 
 
     }
