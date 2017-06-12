@@ -20,11 +20,23 @@ public class BaseEnvironment {
         }
     }
 
+    public static class MULT  implements Function{
+
+        @Override
+        public Object apply(Object... args) {
+            long result =1;
+            for(Object arg : args){
+                result *=  (Long) arg;
+            }
+            return result;
+        }
+    }
 
 
     public static Environment getBaseEnvironment(){
         Environment environment = new Environment();
         environment.putValue(new SymbolForm("+"),new PLUS());
+        environment.putValue(new SymbolForm("*"),new MULT());
         return environment;
     }
 }

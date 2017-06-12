@@ -3,6 +3,7 @@ package com.yilisp;
 import com.yilisp.env.BaseEnvironment;
 import com.yilisp.env.Environment;
 import com.yilisp.form.Form;
+import com.yilisp.form.ListForm;
 
 import java.io.ByteArrayInputStream;
 import java.io.Console;
@@ -23,7 +24,7 @@ public class REPL {
 
     private static  Reader reader ;
 
-    public static Form read() throws IOException {
+    public static ListForm read() throws IOException {
 
        Console console =  System.console();
 
@@ -40,7 +41,7 @@ public class REPL {
 
     }
 
-    public static Form read2() throws IOException {
+    public static ListForm read2() throws IOException {
 
         String line = "(  333  444 ( 777 8888 ) )";
 
@@ -51,20 +52,23 @@ public class REPL {
     }
     public static void main(String[] args) {
         Environment environment = BaseEnvironment.getBaseEnvironment();
-        while (true){
+        while (true)
+            try {
+                ListForm form = read();
+                Object output = null;
+                while (form.car != null){
+                      output = form.car.eval(environment);
+                      form = form.cdr;
+                }
 
-            try{
-                Form form =  read();
-                Object output = form.eval(environment);
                 System.out.println(output);
 
-            }catch (EOFException e){
+            } catch (EOFException e) {
                 return;
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
+                e.printStackTrace();
             }
-        }
 
 
     }

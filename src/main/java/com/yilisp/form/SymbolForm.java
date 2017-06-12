@@ -18,7 +18,16 @@ public class SymbolForm implements Form {
         return "'" + this.name;
     }
 
+    @Override public int hashCode() {
+        return this.name.hashCode();
+    }
 
+    @Override public boolean equals(Object obj) {
+         if(obj instanceof SymbolForm && ((SymbolForm) obj).name.equals(this.name)){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Object eval(Environment env) {

@@ -13,7 +13,7 @@ public class Reader {
 
 
 
-    public static Form read(InputStream inputStream) throws IOException {
+    public static ListForm read(InputStream inputStream) throws IOException {
 
          return  read(new PushbackReader(new InputStreamReader(inputStream)));
 
@@ -45,12 +45,12 @@ public class Reader {
             return  readNumber(pushbackReader);
         }else  if(ch == '('){
             return readList(pushbackReader);
-        }else if(CharUtil.isSymbolChar(ch)) {
-            pushbackReader.unread(ch);
-            return readSymbol(pushbackReader);
         }else if(ch =='#' ) {
 //            pushbackReader.unread(ch);
             return readBoolean(pushbackReader);
+        }else if(CharUtil.isSymbolChar(ch)) {
+            pushbackReader.unread(ch);
+            return readSymbol(pushbackReader);
         }
         else {
             throw new IllegalArgumentException("Illegal character: " + ch);

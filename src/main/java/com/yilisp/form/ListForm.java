@@ -15,14 +15,14 @@ public class ListForm implements Form {
 
     public Form car;
 
-    public Form cdr;
+    public ListForm cdr;
 
     public ListForm() {
         car = null;
         cdr = null;
     }
 
-    public ListForm(Form car, Form cdr) {
+    public ListForm(Form car, ListForm cdr) {
         this.car = car;
         this.cdr = cdr;
     }
@@ -41,15 +41,18 @@ public class ListForm implements Form {
     }
 
     public Object eval(Environment env) {
-        Function function = (Function) this.car;
+        Function function = (Function) this.car.eval(env);
+        if(function == null){
+            throw  new UnsupportedOperationException( car.toString() + " no such function");
+        }
         List<Object> args = new ArrayList<Object>();
         ListForm cdr = (ListForm)this.cdr;
         while (cdr != EMPTY){
-            args.add(cdr.eval(env));
+            args.add(cdr.car.eval(env));
             cdr = (ListForm) cdr.cdr;
         }
 
-        return function.apply(args);
+        return function.apply(args.toArray());
     }
 
     @Override

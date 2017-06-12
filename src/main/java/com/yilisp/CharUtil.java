@@ -7,7 +7,7 @@ public class CharUtil {
 
     public static boolean isSymbolChar(char ch){
         if(ch >='a' && ch <='z' || ch >='A' && ch <='Z' ||
-                ch=='_' || ch =='-'){
+                ch=='_' || ch =='-' || ch=='+' || ch == '*'){
             return true;
         }
         return  false;
