@@ -5,20 +5,20 @@ import com.yilisp.env.Environment;
 /**
  * Created by wjj on 6/10/17.
  */
-public class NumberForm implements Form {
+public class BooleanForm implements Form {
 
-    private Long num;
+    private Boolean bool;
 
-    public NumberForm(Long num) {
-        this.num = num;
+    public BooleanForm(Boolean num) {
+        this.bool = num;
     }
 
     public Object eval(Environment env) {
-        return num;
+        return bool;
     }
 
     @Override
     public String toString() {
-        return num.toString();
+        return bool.toString();
     }
 }

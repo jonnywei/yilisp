@@ -1,9 +1,6 @@
 package com.yilisp;
 
-import com.yilisp.form.Form;
-import com.yilisp.form.ListForm;
-import com.yilisp.form.NumberForm;
-import com.yilisp.form.SymbolForm;
+import com.yilisp.form.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,7 +48,10 @@ public class Reader {
         }else if(CharUtil.isSymbolChar(ch)) {
             pushbackReader.unread(ch);
             return readSymbol(pushbackReader);
-        }//
+        }else if(ch =='#' ) {
+//            pushbackReader.unread(ch);
+            return readBoolean(pushbackReader);
+        }
         else {
             throw new IllegalArgumentException("Illegal character: " + ch);
         }
@@ -66,7 +66,10 @@ public class Reader {
         char ch = (char) reader.read();
         if(ch == ')'){
             return ListForm.EMPTY ;
-        }else {
+        }else if( (byte)ch == -1){
+            throw new IllegalArgumentException("EOF read before closing list");
+        }
+        else {
             reader.unread(ch);
         }
         Form form1 = readForm(reader);
@@ -147,4 +150,27 @@ public class Reader {
         reader.unread(ch);
         return new SymbolForm(sb.toString());
     }
+
+
+    public static BooleanForm readBoolean(PushbackReader reader) throws IOException {
+
+        Boolean  aBoolean =  Boolean.FALSE;
+
+        char ch = (char) reader.read();
+
+        if (ch =='t' || ch =='T'){
+            aBoolean = Boolean.TRUE;
+        }
+        if (ch =='f' || ch =='F'){
+            aBoolean = Boolean.FALSE;
+        }
+        ch = (char) reader.read();
+
+        if(!CharUtil.isEndBoolean(ch)){
+            throw new IllegalArgumentException("Illegal character: " + ch);
+        }
+        reader.unread(ch);
+        return new BooleanForm(aBoolean);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.yilisp.form;
 
+import com.yilisp.env.Environment;
+
 /**
  * Created by wjj on 6/10/17.
  */
@@ -19,7 +21,7 @@ public class SymbolForm implements Form {
 
 
     @Override
-    public Object eval() {
-        return null;
+    public Object eval(Environment env) {
+        return env.getValue(this);
     }
 }

@@ -1,9 +1,12 @@
 package com.yilisp;
 
+import com.yilisp.env.BaseEnvironment;
+import com.yilisp.env.Environment;
 import com.yilisp.form.Form;
 
 import java.io.ByteArrayInputStream;
 import java.io.Console;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -47,14 +50,18 @@ public class REPL {
 
     }
     public static void main(String[] args) {
+        Environment environment = BaseEnvironment.getBaseEnvironment();
         while (true){
 
             try{
                 Form form =  read();
-                Object output = form.eval();
+                Object output = form.eval(environment);
                 System.out.println(output);
 
-            }catch (Exception e){
+            }catch (EOFException e){
+                return;
+            }
+            catch (Exception e){
                 System.out.println(e);
             }
         }

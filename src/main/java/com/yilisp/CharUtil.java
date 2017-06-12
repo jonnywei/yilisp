@@ -12,4 +12,11 @@ public class CharUtil {
         }
         return  false;
     }
+
+    public static boolean isEndBoolean(char ch){
+        if(Character.isWhitespace(ch) || ch == ')' || (byte)ch == -1){
+            return true;
+        }
+        return  false;
+    }
 }

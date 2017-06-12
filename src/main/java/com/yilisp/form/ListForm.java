@@ -1,5 +1,9 @@
 package com.yilisp.form;
 
+import com.yilisp.Function;
+import com.yilisp.env.Environment;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,9 +13,9 @@ public class ListForm implements Form {
 
     public static final ListForm EMPTY = new ListForm(null, null);
 
-    private Form car;
+    public Form car;
 
-    private Form cdr;
+    public Form cdr;
 
     public ListForm() {
         car = null;
@@ -20,22 +24,6 @@ public class ListForm implements Form {
 
     public ListForm(Form car, Form cdr) {
         this.car = car;
-        this.cdr = cdr;
-    }
-
-    public Form getCar() {
-        return car;
-    }
-
-    public void setCar(Form car) {
-        this.car = car;
-    }
-
-    public Form getCdr() {
-        return cdr;
-    }
-
-    public void setCdr(Form cdr) {
         this.cdr = cdr;
     }
 
@@ -52,8 +40,16 @@ public class ListForm implements Form {
         return l;
     }
 
-    public Object eval() {
-        return toString();
+    public Object eval(Environment env) {
+        Function function = (Function) this.car;
+        List<Object> args = new ArrayList<Object>();
+        ListForm cdr = (ListForm)this.cdr;
+        while (cdr != EMPTY){
+            args.add(cdr.eval(env));
+            cdr = (ListForm) cdr.cdr;
+        }
+
+        return function.apply(args);
     }
 
     @Override
@@ -62,8 +58,8 @@ public class ListForm implements Form {
             return "()";
         }
         return "(" +
-                " " +  car +
-                ", " + cdr +
-                ')';
+                " " +   car +
+                " , " + cdr +
+                " )";
     }
 }
