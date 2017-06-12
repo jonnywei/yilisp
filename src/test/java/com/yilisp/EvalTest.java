@@ -115,4 +115,23 @@ public class EvalTest {
 
         Assert.assertEquals(new Long(34L), output);
     }
+
+
+
+    @Test
+    public void testQuote  () throws IOException {
+        String expression = "( (quote +) 3  4)";
+        InputStream is = stringToInpuStream(expression);
+        ListForm result  = Reader.read(is);
+        Environment environment = BaseEnvironment.getBaseEnvironment();
+
+        ListForm form = result;
+        Object output = null;
+        while (form.car != null){
+            output = form.car.eval(environment);
+            form = form.cdr;
+        }
+
+        Assert.assertEquals(new Long(7L), output);
+    }
 }

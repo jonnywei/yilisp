@@ -17,6 +17,14 @@ public class BooleanForm implements Form {
         return bool;
     }
 
+    @Override public int hashCode() {
+        return bool.hashCode();
+    }
+
+    @Override public boolean equals(Object obj) {
+        return obj instanceof Boolean && bool.equals(obj);
+    }
+
     @Override
     public String toString() {
         return bool.toString();

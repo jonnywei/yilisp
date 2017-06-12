@@ -1,9 +1,6 @@
 package com.yilisp;
 
-import com.yilisp.form.Form;
-import com.yilisp.form.ListForm;
-import com.yilisp.form.NumberForm;
-import com.yilisp.form.SymbolForm;
+import com.yilisp.form.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,6 +33,20 @@ public class ReaderTest {
          Assert.assertEquals(expect, result);
     }
 
+
+
+    @Test
+    public void testReadBoolean () throws IOException {
+        String expression = "#t";
+        InputStream is = stringToInpuStream(expression);
+        ListForm result  = Reader.read(is);
+
+        List<Form> list = new ArrayList<>();
+        list.add(new BooleanForm(true));
+        Form expect = ListForm.list(list);
+
+        Assert.assertEquals(expect, result);
+    }
 
 
     @Test
