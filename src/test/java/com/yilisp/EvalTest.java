@@ -131,7 +131,6 @@ public class EvalTest {
             output = form.car.eval(environment);
             form = form.cdr;
         }
-
         Assert.assertEquals(new Long(7L), output);
     }
 }
