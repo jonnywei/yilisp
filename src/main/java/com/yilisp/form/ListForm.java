@@ -65,4 +65,23 @@ public class ListForm implements Form {
                 " , " + cdr +
                 " )";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(! (obj instanceof ListForm) ) {
+            return false;
+        }
+        if( this == EMPTY && obj == EMPTY){
+            return true;
+        }
+        ListForm that = (ListForm) obj;
+
+        if(this.cdr ==EMPTY && that.cdr != EMPTY ){
+            return false;
+        }
+//        System.out.println(this.car.equals(that.car));
+        return this.car.equals(that.car) && this.cdr.equals(that.cdr);
+
+    }
 }

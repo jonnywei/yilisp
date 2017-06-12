@@ -21,4 +21,12 @@ public class NumberForm implements Form {
     public String toString() {
         return num.toString();
     }
+
+    @Override public int hashCode() {
+        return num.hashCode();
+    }
+
+    @Override public boolean equals(Object obj) {
+        return (obj instanceof NumberForm) && this.num .equals( ( (NumberForm) obj ).num );
+    }
 }

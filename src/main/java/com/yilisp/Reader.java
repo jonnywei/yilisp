@@ -20,7 +20,7 @@ public class Reader {
     }
 
 
-    public static ListForm read(PushbackReader pushbackReader) throws IOException{
+    private static ListForm read(PushbackReader pushbackReader) throws IOException{
 
         List<Form> formList = new ArrayList<>();
         readWhitespace(pushbackReader);
@@ -35,7 +35,7 @@ public class Reader {
 
     }
 
-    public static Form readForm(PushbackReader pushbackReader) throws IOException{
+    private static Form readForm(PushbackReader pushbackReader) throws IOException{
 
         readWhitespace(pushbackReader);
         char ch = (char) pushbackReader.read();
@@ -44,7 +44,7 @@ public class Reader {
             pushbackReader.unread(ch);
             return  readNumber(pushbackReader);
         }else  if(ch == '('){
-            return readList(pushbackReader);
+            return SpecialForm.check( readList(pushbackReader));
         }else if(ch =='#' ) {
 //            pushbackReader.unread(ch);
             return readBoolean(pushbackReader);
@@ -59,7 +59,7 @@ public class Reader {
     }
 
 
-    public static ListForm readList(PushbackReader reader) throws IOException {
+    private static ListForm readList(PushbackReader reader) throws IOException {
 
 
         readWhitespace(reader); //
@@ -103,7 +103,7 @@ public class Reader {
     }
 
 
-    public static NumberForm readNumber(PushbackReader reader) throws IOException {
+    private static NumberForm readNumber(PushbackReader reader) throws IOException {
 
         StringBuilder sb = new StringBuilder();
 
@@ -125,7 +125,7 @@ public class Reader {
      * @param reader
      * @throws IOException
      */
-    public static void readWhitespace(PushbackReader reader) throws IOException {
+    private static void readWhitespace(PushbackReader reader) throws IOException {
 
         char ch = (char) reader.read();
         while (Character.isWhitespace(ch)){
@@ -137,7 +137,7 @@ public class Reader {
 
 
 
-    public static SymbolForm readSymbol(PushbackReader reader) throws IOException {
+    private static SymbolForm readSymbol(PushbackReader reader) throws IOException {
 
         StringBuilder sb = new StringBuilder();
 
@@ -152,7 +152,7 @@ public class Reader {
     }
 
 
-    public static BooleanForm readBoolean(PushbackReader reader) throws IOException {
+    private static BooleanForm readBoolean(PushbackReader reader) throws IOException {
 
         Boolean  aBoolean =  Boolean.FALSE;
 
