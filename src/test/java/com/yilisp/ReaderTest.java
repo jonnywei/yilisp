@@ -14,7 +14,7 @@ import java.util.List;
  * Created by jianjunwei on 2017/6/12.
  */
 
-public class ReaderTest {
+public class ReaderTest extends BaseTest {
 
     public InputStream stringToInpuStream(String s){
         return    new ByteArrayInputStream(s.getBytes());
@@ -33,7 +33,18 @@ public class ReaderTest {
          Assert.assertEquals(expect, result);
     }
 
+    @Test
+    public void testReadNegativeNumber () throws IOException {
+        String expression = "-1234";
 
+        ListForm result  = readLisp(expression);
+
+        List<Form> list = new ArrayList<>();
+        list.add(new NumberForm(-1234L));
+        Form expect = ListForm.list(list);
+
+        Assert.assertEquals(expect, result);
+    }
 
     @Test
     public void testReadBoolean () throws IOException {

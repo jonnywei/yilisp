@@ -108,7 +108,10 @@ public class Reader {
         StringBuilder sb = new StringBuilder();
 
         char ch = (char) reader.read();
-
+//        if(ch =='-' || Character.isDigit(ch) ){
+//            sb.append(ch);
+//            ch = (char) reader.read();
+//        }
         while (Character.isDigit(ch)){
             sb.append(ch);
             ch = (char) reader.read();

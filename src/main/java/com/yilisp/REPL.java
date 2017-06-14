@@ -5,10 +5,7 @@ import com.yilisp.env.Environment;
 import com.yilisp.form.Form;
 import com.yilisp.form.ListForm;
 
-import java.io.ByteArrayInputStream;
-import java.io.Console;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -41,18 +38,42 @@ public class REPL {
 
     }
 
-    public static ListForm read2() throws IOException {
+    public static void runYilisp(String file) throws IOException {
 
-        String line = "(  333  444 ( 777 8888 ) )";
-
-
-        return Reader.read(new ByteArrayInputStream(line.getBytes("UTF-8")));
-
-
-    }
-    public static void main(String[] args) {
+        FileInputStream fileInputStream = new FileInputStream(file);
         Environment environment = BaseEnvironment.getBaseEnvironment();
-        while (true)
+        try {
+            ListForm lform =Reader.read(fileInputStream);
+            Object output = null;
+            for(Form f : lform){
+                output = f.eval(environment);
+            }
+            System.out.println(output);
+        } catch (EOFException e) {
+            return;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public static void main(String[] files) {
+        if(files.length == 0){
+            startREPL();
+        }else {
+            for (int i = 0; i < (files == null ? 0 : files.length); i++) {
+                try {
+                    runYilisp(files[i]);
+                }catch (Exception e){
+                    System.out.println(e);
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+    }
+
+    private static void startREPL() {
+        Environment environment = BaseEnvironment.getBaseEnvironment();
+        while (true){
             try {
                 ListForm lform = read();
                 Object output = null;
@@ -68,7 +89,6 @@ public class REPL {
                 System.out.println(e);
                 e.printStackTrace();
             }
-
-
+        }
     }
 }

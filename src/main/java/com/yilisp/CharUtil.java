@@ -10,14 +10,14 @@ public class CharUtil {
 //                ch=='_' || ch =='-' || ch=='+' || ch == '*'){
 //            return true;
 //        }
-        if(ch =='(' || ch == ')' || Character.isWhitespace(ch)) {
+        if(ch =='(' || ch == ')' || Character.isWhitespace(ch) || (byte)ch == -1) {
             return  false;
         }
         return  true;
     }
 
     public static boolean isEndBoolean(char ch){
-        if(Character.isWhitespace(ch) || ch == ')' || (byte)ch == -1){
+        if(Character.isWhitespace(ch) || ch == ')'  || ch == '(' || (byte)ch == -1){
             return true;
         }
         return  false;

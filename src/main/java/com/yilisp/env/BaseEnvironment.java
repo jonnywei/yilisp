@@ -1,7 +1,13 @@
 package com.yilisp.env;
 
 import com.yilisp.Function;
+import com.yilisp.form.Form;
+import com.yilisp.form.ListForm;
 import com.yilisp.form.SymbolForm;
+import com.yilisp.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wjj on 6/11/17.
@@ -193,6 +199,57 @@ public class BaseEnvironment {
 
 
 
+    public static class NOW  extends BuiltinFunction{
+
+        public NOW (String name) {
+            super(name);
+        }
+
+        @Override
+        public Object apply(Object... args) {
+            return System.currentTimeMillis();
+        }
+    }
+
+    public static class LIST  extends BuiltinFunction{
+
+        public LIST (String name) {
+            super(name);
+        }
+
+        @Override
+        public Object apply(Object... args) {
+            return new  Util.List(args);
+        }
+    }
+
+
+    public static class CAR  extends BuiltinFunction{
+
+        public CAR (String name) {
+            super(name);
+        }
+
+        @Override
+        public Object apply(Object... args) {
+            return new  Util.List(args);
+        }
+    }
+
+
+
+    public static class CDR  extends BuiltinFunction{
+
+        public CDR (String name) {
+            super(name);
+        }
+
+        @Override
+        public Object apply(Object... args) {
+            return new  Util.List(args);
+        }
+    }
+
 
     public static Environment getBaseEnvironment(){
         Environment environment = new Environment();
@@ -208,6 +265,10 @@ public class BaseEnvironment {
         environment.putValue(new SymbolForm("<"),new LT("<"));
 
         environment.putValue(new SymbolForm("println"),new PRINTLN("println"));
+        environment.putValue(new SymbolForm("now"),new NOW("now"));
+        environment.putValue(new SymbolForm("list"),new LIST("list"));
+        environment.putValue(new SymbolForm("car"),new CAR("car"));
+        environment.putValue(new SymbolForm("cdr"),new CDR("cdr"));
 
 
         return environment;
