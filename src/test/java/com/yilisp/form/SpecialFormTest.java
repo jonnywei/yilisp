@@ -1,6 +1,7 @@
 package com.yilisp.form;
 
 import com.yilisp.BaseTest;
+import com.yilisp.env.BaseEnvironment;
 import com.yilisp.env.Environment;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class SpecialFormTest extends BaseTest {
     }
 
 
+
+
+
     @Test
     public  void testIfSpecialFormNullList(){
         String expression = "( if () 3 5 )";
@@ -41,7 +45,35 @@ public class SpecialFormTest extends BaseTest {
     public  void testIfSpecialDefineSymbol(){
         String expression = "(define a 10 ) ( if a a 5 )";
         ListForm result  = readLisp(expression);
-        Object xx = evalResult(result, new Environment());
+        Object xx = evalResult(result, BaseEnvironment.getBaseEnvironment());
         Assert.assertEquals(10L,  xx);
+    }
+
+
+
+    @Test
+    public  void testLambdaSpecialForm(){
+        String expression = "( (lambda  (xxx yy) ( * xxx yy))  3 4)";
+        ListForm result  = readLisp(expression);
+        Object xx = evalResult(result, BaseEnvironment.getBaseEnvironment());
+        Assert.assertEquals(12L,  xx);
+    }
+
+
+    @Test
+    public  void testDefineLambdaSpecialForm(){
+        String expression = "(define xy  (lambda  (xxx yy) ( * xxx yy)) ) ( xy  3 4)";
+        ListForm result  = readLisp(expression);
+        Object xx = evalResult(result, BaseEnvironment.getBaseEnvironment());
+        Assert.assertEquals(12L,  xx);
+    }
+
+
+    @Test
+    public  void testLambdaSpecialFormMutibody(){
+        String expression = "( (lambda  (xxx yy) ( * xxx yy) (+ xxx yy) )  3 4)";
+        ListForm result  = readLisp(expression);
+        Object xx = evalResult(result, BaseEnvironment.getBaseEnvironment());
+        Assert.assertEquals(7L,  xx);
     }
 }

@@ -1,5 +1,6 @@
 package com.yilisp.form;
 
+import com.yilisp.Function;
 import com.yilisp.env.Environment;
 
 /**
@@ -115,10 +116,29 @@ public class SpecialForm   implements Form{
         }
 
         @Override public Object eval(Environment env) {
-            Form parm_expr = this.form.cdr.car;  //second
+            ListForm parm_expr = (ListForm) this.form.cdr.car;  //second
             Form body_expr = this.form.cdr.cdr.car; //third
 //            env.putValue(symbol, this.form.cdr.cdr.car.eval(env));
-            return null;
+
+            return new Function() {
+
+                Environment lambdaEnv = new Environment(env);
+                @Override public Object apply(Object... args) {
+                    if(args.length !=  parm_expr.length()){
+                        throw  new IllegalArgumentException("lambda parameter error");
+                    }
+                    // put param into env
+                    int idx =0;
+                    for(Form form : parm_expr){
+                        lambdaEnv.putValue((SymbolForm) form, args[idx++]);
+                    }
+                    return body_expr.eval(lambdaEnv);
+                }
+                @Override public Object eval(Environment env) {
+                    return this;
+                }
+            }
+          ;
         }
 
         @Override public String toString() {
