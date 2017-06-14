@@ -8,7 +8,34 @@ import com.yilisp.form.SymbolForm;
  */
 public class BaseEnvironment {
 
-    public static class PLUS  implements Function{
+    public  static class BuiltinFunction implements Function{
+
+        private String name;
+
+        public BuiltinFunction(String name) {
+            this.name = name;
+        }
+
+        @Override public Object apply(Object... args) {
+            return null;
+        }
+
+        @Override public Object eval(Environment env) {
+            return this;
+        }
+
+        @Override public String toString() {
+            return "<procedure:"  + name  + '>';
+        }
+
+
+    }
+
+    public static class PLUS  extends BuiltinFunction{
+
+        public PLUS(String name) {
+            super(name);
+        }
 
         @Override
         public Object apply(Object... args) {
@@ -20,7 +47,11 @@ public class BaseEnvironment {
         }
     }
 
-    public static class MULT  implements Function{
+    public static class MULT  extends BuiltinFunction{
+
+        public MULT(String name) {
+            super(name);
+        }
 
         @Override
         public Object apply(Object... args) {
@@ -35,8 +66,8 @@ public class BaseEnvironment {
 
     public static Environment getBaseEnvironment(){
         Environment environment = new Environment();
-        environment.putValue(new SymbolForm("+"),new PLUS());
-        environment.putValue(new SymbolForm("*"),new MULT());
+        environment.putValue(new SymbolForm("+"),new PLUS("+"));
+        environment.putValue(new SymbolForm("*"),new MULT("*"));
         return environment;
     }
 }

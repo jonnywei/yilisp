@@ -16,6 +16,10 @@ public class SpecialForm   implements Form{
     private static  String IF = "if";
     private  static   SymbolForm IF_SYMBOL_FORM = new SymbolForm(IF);
 
+    private static  String LAMBDA = "lambda";
+    private  static   SymbolForm LAMBDA_SYMBOL_FORM = new SymbolForm(LAMBDA);
+
+
     @Override public Object eval(Environment env) {
         return null;
     }
@@ -97,9 +101,25 @@ public class SpecialForm   implements Form{
             }
         }
 
+        @Override public String toString() {
+            return form.toString();
+        }
+    }
 
+    public static class LambdaSpecialForm extends SpecialForm {
 
+        protected final ListForm form;
 
+        private LambdaSpecialForm(ListForm form) {
+            this.form = form;
+        }
+
+        @Override public Object eval(Environment env) {
+            Form parm_expr = this.form.cdr.car;  //second
+            Form body_expr = this.form.cdr.cdr.car; //third
+//            env.putValue(symbol, this.form.cdr.cdr.car.eval(env));
+            return null;
+        }
 
         @Override public String toString() {
             return form.toString();
@@ -115,11 +135,13 @@ public class SpecialForm   implements Form{
             return new DefineSpecialForm(l);
         }else if (l.car.equals(SpecialForm.QUOTE_SYMBOL_FORM)){
             return new QuoteSpecialForm(l);
-        }else if (l.car.equals(SpecialForm.QUOTE_SYMBOL_FORM)){
-            return new QuoteSpecialForm(l);
         }else if (l.car.equals(SpecialForm.IF_SYMBOL_FORM)){
             return new IfSpecialForm(l);
+        }else if (l.car.equals(SpecialForm.LAMBDA_SYMBOL_FORM)){
+            return new LambdaSpecialForm(l);
         }
+
+
         return l;
     }
 

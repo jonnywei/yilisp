@@ -13,9 +13,21 @@ import java.util.HashMap;
 public class Environment {
     private final HashMap<SymbolForm , Object> env = new HashMap<>();
 
-    public Object getValue(SymbolForm symbolForm){
+    private Environment parent; //parent
 
-        return  env.get(symbolForm);
+    public Environment() {
+    }
+
+    public Environment(Environment parent) {
+        this.parent = parent;
+    }
+
+    public Object getValue(SymbolForm symbolForm){
+        Object result = env.get(symbolForm);
+        if(parent != null &&  result == null ){
+            return  parent.getValue(symbolForm);
+        }
+        return result;
     }
 
     public Object putValue(SymbolForm symbolForm,Object object){

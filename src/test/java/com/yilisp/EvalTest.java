@@ -5,6 +5,7 @@ import com.yilisp.env.Environment;
 import com.yilisp.form.Form;
 import com.yilisp.form.ListForm;
 import com.yilisp.form.NumberForm;
+import com.yilisp.form.SymbolForm;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -129,8 +130,8 @@ public class EvalTest extends BaseTest {
         ListForm result  =readLisp(expression);
         Environment environment = BaseEnvironment.getBaseEnvironment();
         Object output = evalResult(result, environment);
-
-        Assert.assertEquals("'aaa", output);
+        SymbolForm symbolForm = new SymbolForm("aaa");
+        Assert.assertEquals(symbolForm, output);
     }
 
     @Test
