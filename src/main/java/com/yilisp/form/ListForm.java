@@ -4,12 +4,13 @@ import com.yilisp.Function;
 import com.yilisp.env.Environment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by wjj on 6/10/17.
  */
-public class ListForm implements Form {
+public class ListForm implements Form ,Iterable<Form> {
 
     public static final ListForm EMPTY = new ListForm(null, null);
 
@@ -32,6 +33,17 @@ public class ListForm implements Form {
     }
 
 
+    public long length(){
+        long length =0;
+        if(this == ListForm.EMPTY){
+            return 0;
+        }
+        for(Form f : this){
+            length ++;
+        }
+        return length;
+    }
+
     public static ListForm list(List<Form> forms){
         ListForm l = ListForm.EMPTY;
         for(int i= forms.size()-1; i >=0;  i--){
@@ -45,13 +57,10 @@ public class ListForm implements Form {
         if(function == null){
             throw  new UnsupportedOperationException( car.toString() + " no such function");
         }
-        List<Object> args = new ArrayList<Object>();
-        ListForm cdr = (ListForm)this.cdr;
-        while (cdr != EMPTY){
-            args.add(cdr.car.eval(env));
-            cdr = (ListForm) cdr.cdr;
+        List<Object> args = new ArrayList<>();
+        for(Form xx : this.cdr){
+            args.add(xx.eval(env));
         }
-
         return function.apply(args.toArray());
     }
 
@@ -83,5 +92,22 @@ public class ListForm implements Form {
 //        System.out.println(this.car.equals(that.car));
         return this.car.equals(that.car) && this.cdr.equals(that.cdr);
 
+    }
+
+    @Override public Iterator<Form> iterator() {
+
+         return new Iterator<Form>() {
+            ListForm  inner = ListForm.this;
+
+            @Override public boolean hasNext() {
+                return inner != ListForm.EMPTY;
+            }
+
+            @Override public Form next() {
+                Form current = inner.car;
+                inner = inner.cdr;
+                return current;
+            }
+        };
     }
 }

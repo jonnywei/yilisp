@@ -54,13 +54,12 @@ public class REPL {
         Environment environment = BaseEnvironment.getBaseEnvironment();
         while (true)
             try {
-                ListForm form = read();
+                ListForm lform = read();
                 Object output = null;
-                while (form.car != null){
-                      output = form.car.eval(environment);
-                      form = form.cdr;
-                }
 
+                for(Form f : lform){
+                    output = f.eval(environment);
+                }
                 System.out.println(output);
 
             } catch (EOFException e) {

@@ -30,6 +30,8 @@ a small lisp language
 3. if
 4. quote
 
+    Example: (quote (a list of undefined symbols))
+
 ## Builtin Functions
 
 1. Arithmetic functions (+, -, *, /, %, =, >, <)

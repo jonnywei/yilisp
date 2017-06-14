@@ -5,7 +5,7 @@ import com.yilisp.env.Environment;
 /**
  * Created by jianjunwei on 2017/6/12.
  */
-public class SpecialForm  implements Form{
+public class SpecialForm   implements Form{
 
     private  static  String DEFINE = "define";
     private  static   SymbolForm DEFINE_SYMBOL_FORM = new SymbolForm(DEFINE);
@@ -49,7 +49,11 @@ public class SpecialForm  implements Form{
         @Override public Object eval(Environment env) {
 //            SymbolForm symbol = (SymbolForm) this.form.cdr.car;
 //            env.putValue(symbol, this.form.cdr.cdr.car.eval(env));
-            return this.form.cdr.car;
+            Form a = this.form.cdr.car;
+            if(this.form.cdr.cdr != ListForm.EMPTY){
+                throw  new IllegalArgumentException("quote part number must be 1");
+            }
+            return a;
         }
 
         @Override public String toString() {

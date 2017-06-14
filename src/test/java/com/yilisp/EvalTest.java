@@ -17,12 +17,7 @@ import java.util.List;
 /**
  * Created by jianjunwei on 2017/6/12.
  */
-public class EvalTest {
-
-    public InputStream stringToInpuStream(String s){
-        return    new ByteArrayInputStream(s.getBytes());
-    }
-
+public class EvalTest extends BaseTest {
 
     @Test
     public void testPlus () throws IOException {
@@ -117,20 +112,35 @@ public class EvalTest {
     }
 
 
+//
+    //    @Test
+    //    public void testQuote  () throws IOException {
+    //        String expression = "( (quote +) 3  4)";
+    //        ListForm result  =readLisp(expression);
+    //        Environment environment = BaseEnvironment.getBaseEnvironment();
+    //        Object output = evalResult(result, environment);
+    //        Assert.assertEquals(new Long(7L), output);
+    //    }
 
     @Test
-    public void testQuote  () throws IOException {
-        String expression = "( (quote +) 3  4)";
-        InputStream is = stringToInpuStream(expression);
-        ListForm result  = Reader.read(is);
-        Environment environment = BaseEnvironment.getBaseEnvironment();
+    public void testQuoteList  () throws IOException {
+        String expression = "( quote  aaa)";
 
-        ListForm form = result;
-        Object output = null;
-        while (form.car != null){
-            output = form.car.eval(environment);
-            form = form.cdr;
-        }
-        Assert.assertEquals(new Long(7L), output);
+        ListForm result  =readLisp(expression);
+        Environment environment = BaseEnvironment.getBaseEnvironment();
+        Object output = evalResult(result, environment);
+
+        Assert.assertEquals("'aaa", output);
+    }
+
+    @Test
+    public void testQuoteNumber  () throws IOException {
+        String expression = "( quote  333)";
+
+        ListForm result  =readLisp(expression);
+        Environment environment = BaseEnvironment.getBaseEnvironment();
+        Object output = evalResult(result, environment);
+        NumberForm numberForm = new NumberForm(333L);
+        Assert.assertEquals(numberForm, output);
     }
 }
