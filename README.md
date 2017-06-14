@@ -28,6 +28,7 @@ a small lisp language
 1. define
 2. lambda
 3. if
+    (if test-expr then-expr else-expr)
 4. quote
 
     Example: (quote (a list of undefined symbols))
