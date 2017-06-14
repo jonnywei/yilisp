@@ -6,11 +6,14 @@ package com.yilisp;
 public class CharUtil {
 
     public static boolean isSymbolChar(char ch){
-        if(ch >='a' && ch <='z' || ch >='A' && ch <='Z' ||
-                ch=='_' || ch =='-' || ch=='+' || ch == '*'){
-            return true;
+//        if(ch >='a' && ch <='z' || ch >='A' && ch <='Z' ||
+//                ch=='_' || ch =='-' || ch=='+' || ch == '*'){
+//            return true;
+//        }
+        if(ch =='(' || ch == ')' || Character.isWhitespace(ch)) {
+            return  false;
         }
-        return  false;
+        return  true;
     }
 
     public static boolean isEndBoolean(char ch){
