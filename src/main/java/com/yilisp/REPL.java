@@ -31,7 +31,7 @@ public class REPL {
 
        String line = scanner.nextLine();
 
-       System.out.println(line);
+//       System.out.println(line);
 
        return Reader.read(new ByteArrayInputStream(line.getBytes("UTF-8")));
 

@@ -232,7 +232,7 @@ public class BaseEnvironment {
 
         @Override
         public Object apply(Object... args) {
-            return new  Util.List(args);
+            return new  Util.List(args[0]);
         }
     }
 
@@ -246,7 +246,11 @@ public class BaseEnvironment {
 
         @Override
         public Object apply(Object... args) {
-            return new  Util.List(args);
+            Object[] rest = new Object[args.length-1];
+            for(int i=0; i< args.length-1; i++){
+                rest[i] = args[i];
+            }
+            return new  Util.List(rest);
         }
     }
 
